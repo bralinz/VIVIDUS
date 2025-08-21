@@ -1,7 +1,11 @@
 GivenStories: story/demo/Homepage_Demo.story
 
 Scenario: Log in as a Good User
-When I log in with username `standard_user` and password `secret_sauce`
-Then `${current-page-url}` is equal to `https://www.saucedemo.com/`
-Then number of elements located by 'inventory-item' is 6
+When I click on element located by `id(user-name)`
+When I enter `${swagGoodUserName}` in field located by `id(user-name)`
+When I click on element located by `id(password)`
+When I enter `${swagPassword}` in field located by `id(password)`
+When I click on element located by `id(login-button)`
+Then `${current-page-url}` is equal to `https://www.saucedemo.com/inventory.html`
+Then number of elements found by `cssSelector(.inventory_item)` is equal to `6`
 When I take screenshot
