@@ -1,2 +1,18 @@
 {
+    "BUG-001": {
+        "type": "Internal",
+        "assertionPattern": ".*",
+        "storyPattern": ".*",
+        "scenarioPattern": ".*",
+        "stepPattern": ".*",
+        "description": "Locked user login does not redirect to inventory page"
+    },
+    "BUG-002": {
+        "type": "Internal",
+        "assertionPattern": "Expected: \"6\" Actual: \"0\"",
+        "storyPattern": "Task_5",
+        "scenarioPattern": "Log in as Locked User",
+        "stepPattern": "Then number of elements located by \\`class\\(inventory_item\\)\\` is equal to \\`6\\`",
+        "description": "Login as Locked User is impossible"
+    }
 }
