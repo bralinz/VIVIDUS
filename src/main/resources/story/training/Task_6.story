@@ -25,15 +25,15 @@ Then text `<itemName>` exists
 When I click on element located by `id(<itemPageID>)`
 When I click on element located by `id(<addToCartButtonId>)`
 Examples:
-    | itemName                | itemPageID           | addToCartButtonId        |
-    | Sauce Labs Backpack     | item_4_title_link    | add-to-cart              |
-    | Sauce Labs Bike Light   | item_0_title_link    | add-to-cart              |
-    | Sauce Labs Bolt T-Shirt | item_1_title_link    | add-to-cart              |
+    | itemName                | itemPageID | addToCartButtonId   |
+    | Sauce Labs Backpack     | item_4_title_link          | add-to-cart         |
+    | Sauce Labs Bike Light   | item_0_title_link          | add-to-cart         |
+    | Sauce Labs Bolt T-Shirt | item_1_title_link          | add-to-cart         |
 
 Scenario: Validate the num of items in the shopping cart
 Given I am on page with URL `https://www.saucedemo.com/inventory.html`
 When I click on element located by `id(shopping_cart_container)`
-Then element located by `cssSelector(.cart_item)` is equal to `3`
+Then number of elements found by `cssSelector(.cart_item)` is equal to `3`
 
 Scenario: Log Out
 When I click on element located by `id(react-burger-menu-btn)`
