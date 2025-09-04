@@ -23,5 +23,19 @@ Examples:
 | Price (high to low)  | 2              |
 
 Scenario: Populate checkout data
+When I go to relative URL `/cart.html`
+When I click on element located by `id(checkout)`
+When I COMPARE_AGAINST baseline with name `checkout-step-one`
+When I enter `#{generate(Name.firstName)}` in field located by `id(first-name)`
+When I enter `#{generate(Name.lastName)}` in field located by `id(last-name)`
+When I enter `#{generate(Address.postcode)}` in field located by `id(postal-code)`
 
 Scenario: Complete checkout process
+When I click on element located by `id(continue)`
+When I wait until element located by `caseSensitiveText(Total)` appears
+When I COMPARE_AGAINST baseline with name `checkout-step-two`
+When I initialize story variable `price_1` with value `${xpath(/html/body/div/div/div/div[2]/div/div[1]/div[3]/div[2]/div[2]/div)}`
+Given I initialize story variable `price_2` with value `${xpath(/html/body/div/div/div/div[2]/div/div[1]/div[4]/div[2]/div[2]/div)}`
+Given I ititialize SCENARIO variable `isTotalCorrect` with value `#{round(eval(price_1 + price_2 == ${xpath(/html/body/div/div/div/div[2]/div/div[2]/div[6])}), 2, UP)}`
+Then `${isTotalCorrect}` is equal to `true`
+When I click on element located by `id(finish)`
