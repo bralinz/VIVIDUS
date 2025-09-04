@@ -33,8 +33,21 @@ When I enter `#{generate(Address.postcode)}` in field located by `id(postal-code
 Scenario: Complete checkout process
 When I go to relative URL `/checkout-step-two.html`
 When I COMPARE_AGAINST baseline with name `checkout-step-two`
-When I save text of element located by `xpath(/html/body/div/div/div/div[2]/div/div[1]/div[3]/div[2]/div[2]/div)` to story variable `price_1`
-When I save text of element located by `xpath(/html/body/div/div/div/div[2]/div/div[1]/div[4]/div[2]/div[2]/div)` to story variable `price_2`
-Given I ititialize SCENARIO variable `isTotalCorrect` with value `#{round(eval(price_1 + price_2 == ${xpath(/html/body/div/div/div/div[2]/div/div[2]/div[6])}), 2, UP)}`
-Then `${isTotalCorrect}` is equal to `true`
+
+!-- Extract price 1 and trim $ sign -->
+When I save text of element located by `xpath(/html/body/div/div/div/div[2]/div/div[1]/div[3]/div[2]/div[2]/div)` to story variable `price_1_raw`
+Given I initialize story variable `price_1` with value `#{replaceFirstByRegExp(\$(\d+), $1, ${price_1_raw})}`
+
+!-- Extract price 2 and trim $ sign -->
+When I save text of element located by `xpath(/html/body/div/div/div/div[2]/div/div[1]/div[4]/div[2]/div[2]/div)` to story variable `price_2_raw`
+Given I initialize story variable `price_2` with value `#{replaceFirstByRegExp(\$(\d+), $1, ${price_2_raw})}`
+
+!-- Extract total from checkout page and trim letters -->
+When I save text of element located by `xpath(/html/body/div/div/div/div[2]/div/div[2]/div[6])` to story variable `summaryTotal_raw`
+Given I initialize story variable `summaryTotal` with value `#{replaceFirstByRegExp(\$(\d+), $1, ${summaryTotal_raw})}`
+
+!-- Calculate total and verify the total is correct -->
+Given I initialize SCENARIO variable `totalCalculated` with value `#{eval(price_1 + price_2)}`
+Then `${totalCalculated}` is equal to `${summaryTotal}`
+
 When I click on element located by `id(finish)`
