@@ -1,2 +1,10 @@
 {
+  "BUG-001": {
+      "type": "Internal",
+      "assertionPattern": ".*",
+      "storyPattern": "Task_8",
+      "scenarioPattern": "Validate order summary and complete order",
+      "stepPattern": "Then text .* exists",
+      "description": "Thank you message is not displayed after order completion"
+  }
 }
