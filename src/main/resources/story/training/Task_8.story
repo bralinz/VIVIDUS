@@ -30,7 +30,7 @@ When I enter `#{generate(Name.firstName)}` in field located by `id(first-name)`
 When I enter `#{generate(Name.lastName)}` in field located by `id(last-name)`
 When I enter `#{generate(Address.postcode)}` in field located by `id(postal-code)`
 
-Scenario: Complete checkout process
+Scenario: Validate order summary and complete order
 When I go to relative URL `/checkout-step-two.html`
 When I COMPARE_AGAINST baseline with name `checkout-step-two`
 
@@ -44,10 +44,13 @@ Given I initialize story variable `price_2` with value `#{replaceFirstByRegExp(\
 
 !-- Extract total from checkout page and trim letters -->
 When I save text of element located by `xpath(/html/body/div/div/div/div[2]/div/div[2]/div[6])` to story variable `summaryTotal_raw`
-Given I initialize story variable `summaryTotal` with value `#{replaceFirstByRegExp(\$(\d+), $1, ${summaryTotal_raw})}`
+Given I initialize story variable `summaryTotal` with value `#{replaceFirstByRegExp(Item total: \$(\d+), $1, ${summaryTotal_raw})}`
+Given I initialize story variable `summaryTotalRounded` with value `#{round(${summaryTotal}, 2)}`
 
 !-- Calculate total and verify the total is correct -->
-Given I initialize SCENARIO variable `totalCalculated` with value `#{eval(price_1 + price_2)}`
-Then `${totalCalculated}` is equal to `${summaryTotal}`
+Given I initialize SCENARIO variable `totalCalculated` with value `#{eval(${price_1}b + ${price_2}b)}`
+Then `${totalCalculated}` is equal to `${summaryTotalRounded}`
 
 When I click on element located by `id(finish)`
+When I go to relative URL `/checkout-complete.html`
+Then text `Have a nice day!` exists
